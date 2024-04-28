@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Human-Centered AI Reading Group</title>
+    <link rel="stylesheet" href="styles.css">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inconsolata:wght@200..900&family=Micro+5&display=swap" rel="stylesheet">
+
+    <script src="https://cdn.jsdelivr.net/npm/public-google-sheets-parser@latest"></script>
+    <script>
+      const upcoming_events_div = document.getElementById("events");
+      const parser = new PublicGoogleSheetsParser('1GLPG7ugimrKaaJjhGHymV8fttoSfgtGLzHD4C0oxdL4', { useFormat: true });
+      const eventsData = {
+        events: [],
+        past_events: [],
+      };
+      const retrieveDataPromises = [];
+
+      // Extract first sheet
+      parser.setOption({ sheetName: "Upcoming Events" });
+      retrieveDataPromises.push(
+        parser.parse().then(data => (eventsData.events = data))
+      );
+
+      // Extract second sheet
+      parser.setOption({ sheetName: "Past Events" });
+      retrieveDataPromises.push(
+        parser.parse().then(data => (eventsData.past_events = data))
+      );
+
+      // When the document loads, inject the event data from the Google Sheet:
+      document.addEventListener('DOMContentLoaded', function() {
+        Promise.allSettled(retrieveDataPromises).then(results => {
+          if (results.some(r => r.status === "rejected")) {
+            // Error retrieving the spreadsheet, default to just injecting the link directly: 
+            const container_div = document.getElementById("container");
+            container_div.innerHTML = `
+              <p>&#128560; Error loading event data dynamically. See the schedule in the <a href="https://docs.google.com/spreadsheets/d/1GLPG7ugimrKaaJjhGHymV8fttoSfgtGLzHD4C0oxdL4/edit?usp=sharing">public Google Sheet</a>.</p>
+            `;
+            return;
+          }
+
+          // Remove all loading spinners 
+          document.querySelectorAll('.lds-ellipsis').forEach(e => e.remove());
+
+          // Success processing sheet --inject it into the HTML:
+          Object.keys(eventsData).forEach((event_container_id) => {
+            let eventsContainer = document.getElementById(event_container_id);
+            eventsData[event_container_id].forEach(function(event) {
+              const eventHtml = `
+                  <div class="event">
+                      <h3>Title: ${event.Title}</h3>
+                      <p>Date: ${event.Date}</p>
+                      <p>Location: ${event.Location}</p>
+                      <p>${event.Synopsis}</p>
+                  </div>
+              `;
+              eventsContainer.innerHTML += eventHtml;
+            });
+          });
+        });
+      });
+    </script>
+</head>
+<body>
+    <header>
+        <h1>Human-Centered AI Reading Group</h1>
+        <p>Bringing human factors to AI at Mila since 2024.</p>
+    </header>
+    <div id="container">
+
+      <section id="events">
+        <h2>Upcoming Events</h2>
+        <div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>
+        <!-- Add more events as needed -->
+      </section>
+
+      <section id="past_events">
+        <h2>Past Events</h2>
+        <div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>
+        <!-- Add more past events as needed -->
+      </section>
+
+      <section id="organizers">
+        <h2>Organizers</h2>
+        <ul>
+          <li><a href="https://www.cs.mcgill.ca/~jguo/" target="_blank">Jin L.C. Guo</a>, Assistant Professor of Software Engineering, McGill University</li>
+          <li><a href="https://ianarawjo.com" target="_blank">Ian Arawjo</a>, Assistant Professor of Human-Computer Interaction, Université de Montréal</li>
+        </ul>
+      </section>
+    </div>
+</body>
+</html>
