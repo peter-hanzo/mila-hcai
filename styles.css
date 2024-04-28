@@ -45,6 +45,14 @@ h2 {
   margin: 0;
 }
 
+.event h4 {
+  color: #ffaaaa;
+  font-family: "Micro 5", sans-serif;
+  font-size: 20pt;
+  padding: 0;
+  margin: 0;
+}
+
 p {
   margin: 5px 0;
 }

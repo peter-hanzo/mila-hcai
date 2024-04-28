@@ -52,9 +52,10 @@
           Object.keys(eventsData).forEach((event_container_id) => {
             let eventsContainer = document.getElementById(event_container_id);
             eventsData[event_container_id].forEach(function(event) {
+              const speakerInfo = event.Speaker ? `\n<h4>Speaker: ${event.Speaker}</h4>` : "";
               const eventHtml = `
                   <div class="event">
-                      <h3>Title: ${event.Title}</h3>
+                      <h3>Title: ${event.Title}</h3>${speakerInfo}
                       <p>Date: ${event.Date}</p>
                       <p>Location: ${event.Location}</p>
                       <p>${event.Synopsis}</p>
