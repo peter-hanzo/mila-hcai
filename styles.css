@@ -17,7 +17,7 @@ header {
 
 h1 {
   margin: 0;
-  font-family: "Micro 5", sans-serif;
+  font-family: "Jersey 25", sans-serif;
   font-size: 42pt;
 }
 
@@ -27,7 +27,7 @@ a {
 
 h2 {
   border-bottom: 2px solid #F5F5DC;
-  font-family: "Micro 5", sans-serif;
+  font-family: "Jersey 25", sans-serif;
   font-size: 28pt;
 }
 
@@ -39,7 +39,7 @@ h2 {
 
 .event h3 {
   color: #ffffff;
-  font-family: "Micro 5", sans-serif;
+  font-family: "Jersey 25", sans-serif;
   font-size: 24pt;
   padding: 0;
   margin: 0;
@@ -47,7 +47,7 @@ h2 {
 
 .event h4 {
   color: #ffaaaa;
-  font-family: "Micro 5", sans-serif;
+  font-family: "Jersey 25", sans-serif;
   font-size: 20pt;
   padding: 0;
   margin: 0;
